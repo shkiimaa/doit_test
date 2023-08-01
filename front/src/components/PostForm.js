@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { styled } from 'styled-components';
+import axios from 'axios';
 
 const initialState = {
   name: '',
@@ -12,7 +13,17 @@ const initialState = {
 const PostForm = () => {
   const [userInput, setUserInput] = useState(initialState);
 
-  const onSubmitHandler = () => {};
+  const postBorad = async () => {
+    const response = await axios.post('http://localhost:8800/list', {
+      userInput,
+    });
+    console.log(response);
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    postBorad();
+  };
   const onChangeHandler = (e) => {
     const { value, name } = e.target;
     setUserInput({ ...userInput, [name]: value });

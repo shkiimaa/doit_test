@@ -1,16 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Button from './Button';
 
 const Main = () => {
   return (
     <div>
       메인페이지
       <Link to="/post">
-        <button>Post</button>
+        <Button>Post</Button>
       </Link>
       <main>
         <ul>
-          <li></li>
+          <li>
+            <Button>modify</Button>
+            <Button>delete</Button>
+          </li>
         </ul>
       </main>
     </div>

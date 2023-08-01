@@ -3,8 +3,16 @@ const router = express.Router();
 
 const maria = require('../database/connect/maria');
 
-maria.connect();
-
-router.get('/get', function (req, res) {
-  console.log(req.body);
+router.get('/list', function (req, res) {
+  maria.query('SELCET * FROM ');
 });
+
+router.post('/list', function (req, res) {
+  res.send('테스트');
+});
+
+router.get('/list', function (req, res) {
+  maria.query('SELCET * FROM ');
+});
+
+module.exports = router;
