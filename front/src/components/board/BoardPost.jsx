@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { styled } from 'styled-components';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { BOARD_LIST } from '../../recoil/atoms';
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   name: '',
@@ -10,23 +13,36 @@ const initialState = {
   content: '',
 };
 
-const PostForm = () => {
-  const [userInput, setUserInput] = useState(initialState);
+const BoardPost = () => {
+  const [borad, setBorad] = useState(initialState);
+  const [boardList, setBoardList] = useRecoilState(BOARD_LIST);
+
+  const navigate = useNavigate();
 
   const postBorad = async () => {
-    const response = await axios.post('http://localhost:8800/list', {
-      userInput,
-    });
-    console.log(response);
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/board`,
+        {
+          userInput: borad,
+        }
+      );
+      const { data } = response;
+      setBoardList([...boardList, data]);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
     postBorad();
+    navigate('/board');
   };
+
   const onChangeHandler = (e) => {
     const { value, name } = e.target;
-    setUserInput({ ...userInput, [name]: value });
+    setBorad({ ...borad, [name]: value });
   };
 
   return (
@@ -61,7 +77,7 @@ const PostForm = () => {
   );
 };
 
-export default PostForm;
+export default BoardPost;
 
 const Form = styled.form`
   display: flex;

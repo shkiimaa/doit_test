@@ -1,12 +1,12 @@
+require('dotenv').config();
 const express = require('express');
-const app = express();
-const port = 8800;
 const cors = require('cors');
+
+const app = express();
 const boradRouter = require('./routes/index');
 
-const maria = require('./database/connect/maria');
-
-maria.connect();
+const connectDB = require('./schemas');
+const port = 8800;
 
 let corsOptions = {
   origin: ['http://localhost:3000'],
@@ -14,8 +14,10 @@ let corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use('/', boradRouter);
+app.use(express.json());
+app.use('/', [boradRouter]);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
+  connectDB(process.env.MONGO_DB_URL);
 });
